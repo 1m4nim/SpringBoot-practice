@@ -39,17 +39,27 @@
 
   <body>
     <div class="card">
-      <h1>Hello!</h1>
-      <p>name: 1m4nimさん</p>
+      <h1>fortune</h1>
 
-      <p>
-        fortune:
-        <strong th:text="${luck}" style="color: #ff4500; font-size: 1.5em"
-          >ここに結果が出ます</strong
-        >
-      </p>
-
-      <button onclick="location.reload()">もういちど引く</button>
+      <form action="/profile" method="get">
+        <input
+          type="text"
+          name="name"
+          placeholder="名前を入力してね"
+          required
+        />
+        <button type="submit">占う</button>
+      </form>
+      <hr />
+      <div th:if="${luck}">
+        <p><span th:text="${name}"></span>さんの運勢は...</p>
+        <p>
+          fortune:<strong
+            th:text="${luck}"
+            style="color: #ff4500; font-size: 1.5rem"
+          ></strong>
+        </p>
+      </div>
     </div>
   </body>
 </html>

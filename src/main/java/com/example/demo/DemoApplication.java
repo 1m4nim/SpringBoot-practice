@@ -49,14 +49,26 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	// @GetMapping("/profile")
+	// public String profile(@RequestParam(value = "name", defaultValue = "1m4nim")
+	// String name, Model model) {
+	// String[] results = { "大吉", "中吉", "小吉", "凶" };
+	// String luck = results[new java.util.Random().nextInt(results.length)];
+
+	// model.addAttribute("name", name);
+	// model.addAttribute("luck", luck);
+
+	// return "hello";
+	// }
+
 	@GetMapping("/profile")
-	public String profile(@RequestParam(value = "name", defaultValue = "1m4nim") String name, Model model) {
-		String[] results = { "大吉", "中吉", "小吉", "凶" };
-		String luck = results[new java.util.Random().nextInt(results.length)];
-
-		model.addAttribute("name", name);
-		model.addAttribute("luck", luck);
-
+	public String profile(@RequestParam(value = "name", required = false) String name, Model model) {
+		if (name != null && !name.isEmpty()) {
+			String[] results = { "大吉", "中吉", "小吉", "凶" };
+			String luck = results[new java.util.Random().nextInt(results.length)];
+			model.addAttribute("name", name);
+			model.addAttribute("luck", luck);
+		}
 		return "hello";
 	}
 }
