@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>マイページ</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: #f0f8ff; /* 薄い青色 */
+        text-align: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        display: inline-block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ふわっとした影 */
+      }
+      h1 {
+        color: #007bff; /* Spring Bootっぽい青色 */
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      button:hover {
+        background-color: #0056b3; /* ホバー時に少し暗く */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Hello!</h1>
+      <p>name: 1m4nimさん</p>
+
+      <p>
+        fortune:
+        <strong th:text="${luck}" style="color: #ff4500; font-size: 1.5em"
+          >ここに結果が出ます</strong
+        >
+      </p>
+
+      <button onclick="location.reload()">もういちど引く</button>
+    </div>
+  </body>
+</html>
