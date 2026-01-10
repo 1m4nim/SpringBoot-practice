@@ -52,13 +52,19 @@
       </form>
       <hr />
       <div th:if="${luck}">
-        <p><span th:text="${name}"></span>さんの運勢は...</p>
-        <p>
-          fortune:<strong
-            th:text="${luck}"
-            style="color: #ff4500; font-size: 1.5rem"
-          ></strong>
+        <p th:style="${luck == '凶'} ? 'color: gray;' : ''">
+          <span th:text="${name}"></span>さんの運勢は...
         </p>
+        
+        <p>
+          fortune:<strong th:text="${luck}" 
+            th:style="${luck == '大吉'} ? 'color: gold; font-size: 2rem; text-shadow: 1px 1px 2px black;' : 'color: #ff4500; font-size: 1.5rem;'">
+          </strong>
+        </p>
+
+        <p>lucky item: <span th:text="${item}" style="font-weight: bold;"></span></p>
+        
+        <button onclick="location.href='/profile'">最初に戻る</button>
       </div>
     </div>
   </body>

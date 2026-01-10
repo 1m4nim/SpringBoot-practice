@@ -66,8 +66,12 @@ public class DemoApplication {
 		if (name != null && !name.isEmpty()) {
 			String[] results = { "大吉", "中吉", "小吉", "凶" };
 			String luck = results[new java.util.Random().nextInt(results.length)];
+			String[]items={"青いペン","使い古した辞書","あたたかいココア","新しい靴下"};
+			String luckyItem=items[new java.util.Random().nextInt(items.length)];
+			
 			model.addAttribute("name", name);
 			model.addAttribute("luck", luck);
+			model.addAttribute("item",luckyItem);
 		}
 		return "hello";
 	}
