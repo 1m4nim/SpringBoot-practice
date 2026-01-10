@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,9 +18,27 @@
         padding: 20px;
         display: inline-block;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ふわっとした影 */
+        min-width: 300px;
       }
       h1 {
         color: #007bff; /* Spring Bootっぽい青色 */
+        margin-top: 10px;
+      }
+      nav {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      nav a {
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 0.9rem;
+        font-weight: bold;
+      }
+      input[type="text"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
       }
       button {
         background-color: #007bff;
@@ -34,11 +52,21 @@
       button:hover {
         background-color: #0056b3; /* ホバー時に少し暗く */
       }
+      hr {
+        border: 0;
+        border-top: 1px solid #eee;
+        margin: 20px 0;
+      }
     </style>
   </head>
 
   <body>
     <div class="card">
+      <nav>
+        <a href="/profile" style="color: #007bff;">占い</a>
+        <a href="/about" style="color: #6c757d;">自己紹介</a>
+      </nav>
+
       <h1>fortune</h1>
 
       <form action="/profile" method="get">
@@ -50,14 +78,16 @@
         />
         <button type="submit">占う</button>
       </form>
-      <hr />
+
       <div th:if="${luck}">
+        <hr />
         <p th:style="${luck == '凶'} ? 'color: gray;' : ''">
           <span th:text="${name}"></span>さんの運勢は...
         </p>
         
         <p>
-          fortune:<strong th:text="${luck}" 
+          fortune:
+          <strong th:text="${luck}" 
             th:style="${luck == '大吉'} ? 'color: gold; font-size: 2rem; text-shadow: 1px 1px 2px black;' : 'color: #ff4500; font-size: 1.5rem;'">
           </strong>
         </p>
@@ -66,6 +96,5 @@
         
         <button onclick="location.href='/profile'">最初に戻る</button>
       </div>
-    </div>
-  </body>
+    </div> </body>
 </html>

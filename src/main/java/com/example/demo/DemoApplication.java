@@ -75,6 +75,11 @@ public class DemoApplication {
 		}
 		return "hello";
 	}
+
+	@GetMapping("/about")
+	public String about(){
+		return "about";
+	}
 }
 
 // @GetMapping("/")
