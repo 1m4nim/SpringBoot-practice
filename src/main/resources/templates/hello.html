@@ -39,10 +39,7 @@
 
   <body>
     <div class="card">
-      <nav>
-        <a href="/profile" style="color: #007bff">占い</a>
-        <a href="/about" style="color: #6c757d">自己紹介</a>
-      </nav>
+      <div th:replace="~{common :: menu}"></div>
       <h1>fortune</h1>
 
       <form action="/profile" method="get">

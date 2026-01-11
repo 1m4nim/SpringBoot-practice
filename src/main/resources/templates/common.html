@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <nav
+      th:fragment="menu"
+      style="
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        text-align: center;
+      "
+    >
+      <a
+        href="/profile"
+        style="
+          text-decoration: none;
+          margin: 0 10px;
+          font-size: 0.9rem;
+          font-weight: bold;
+          color: #007bff;
+        "
+        >占い</a
+      >
+      <a
+        href="/about"
+        style="
+          text-decoration: none;
+          margin: 0 10px;
+          font-size: 0.9rem;
+          font-weight: bold;
+          color: #6c757d;
+        "
+        >自己紹介</a
+      >
+    </nav>
+  </body>
+</html>
