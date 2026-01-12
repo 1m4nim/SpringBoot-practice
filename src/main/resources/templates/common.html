@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
     <nav
-      th:fragment="menu"
+      th:fragment="navbar"
       style="
         margin-bottom: 20px;
         border-bottom: 1px solid #eee;
@@ -12,25 +12,18 @@
     >
       <a
         href="/profile"
-        style="
-          text-decoration: none;
-          margin: 0 10px;
-          font-size: 0.9rem;
-          font-weight: bold;
-          color: #007bff;
-        "
+        style="margin: 0 10px; text-decoration: none; color: #007bff"
         >占い</a
       >
       <a
         href="/about"
-        style="
-          text-decoration: none;
-          margin: 0 10px;
-          font-size: 0.9rem;
-          font-weight: bold;
-          color: #6c757d;
-        "
+        style="margin: 0 10px; text-decoration: none; color: #007bff"
         >自己紹介</a
+      >
+      <a
+        href="/history"
+        style="margin: 0 10px; text-decoration: none; color: #007bff"
+        >占いの履歴</a
       >
     </nav>
   </body>

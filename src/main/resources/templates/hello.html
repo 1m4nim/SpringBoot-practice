@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>マイページ</title>
-
     <style>
       body {
         font-family: sans-serif;
-        background-color: #f0f8ff; /* 薄い青色 */
+        background-color: #f0f8ff;
         text-align: center;
         padding-top: 50px;
       }
@@ -17,10 +15,11 @@
         border-radius: 10px;
         padding: 20px;
         display: inline-block;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ふわっとした影 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        min-width: 350px;
       }
       h1 {
-        color: #007bff; /* Spring Bootっぽい青色 */
+        color: #007bff;
       }
       button {
         background-color: #007bff;
@@ -31,18 +30,17 @@
         cursor: pointer;
         margin-top: 15px;
       }
-      button:hover {
-        background-color: #0056b3; /* ホバー時に少し暗く */
+      .history-item:hover {
+        background-color: #f0f0f0;
       }
     </style>
   </head>
-
   <body>
     <div class="card">
-      <div th:replace="~{common :: menu}"></div>
-      <h1>fortune</h1>
+      <div th:replace="~{common :: navbar}"></div>
+      <h1>Fortune</h1>
 
-      <form action="/profile" method="get">
+      <form action="/profile" method="post">
         <input
           type="text"
           name="name"
@@ -51,24 +49,54 @@
         />
         <button type="submit">占う</button>
       </form>
-      <hr />
+
+      <hr th:if="${luck}" style="margin: 20px 0" />
+
       <div th:if="${luck}">
-        <p th:style="${luck == '凶'} ? 'color: gray;' : ''">
-          <span th:text="${name}"></span>さんの運勢は...
-        </p>
-
+        <p><span th:text="${name}"></span>さんの運勢は...</p>
         <p>
-          fortune:<strong
+          fortune:
+          <strong
             th:text="${luck}"
-            th:style="${luck == '大吉'} ? 'color: gold; font-size: 2rem; text-shadow: 1px 1px 2px black;' : 'color: #ff4500; font-size: 1.5rem;'"
-          >
-          </strong>
+            style="color: #ff4500; font-size: 1.5rem"
+          ></strong>
         </p>
-
         <p>
-          lucky item: <span th:text="${item}" style="font-weight: bold"></span>
+          ラッキーアイテム:
+          <span th:text="${item}" style="font-weight: bold"></span>
         </p>
 
+        <div
+          th:if="${!history.isEmpty()}"
+          style="margin-top: 30px; text-align: left"
+        >
+          <h3
+            style="
+              font-size: 0.9rem;
+              color: #666;
+              border-bottom: 1px solid #ddd;
+            "
+          >
+            最近の履歴 (クリックでアイテム確認)
+          </h3>
+          <ul
+            style="font-size: 0.8rem; color: #555; list-style: none; padding: 0"
+          >
+            <li
+              th:each="log : ${history}"
+              th:text="${log.getMessage()}"
+              th:data-item="${log.item}"
+              onclick="alert('この時のラッキーアイテムは：' + this.getAttribute('data-item'))"
+              class="history-item"
+              style="
+                margin-bottom: 5px;
+                padding: 5px;
+                border-left: 3px solid #007bff;
+                cursor: pointer;
+              "
+            ></li>
+          </ul>
+        </div>
         <button onclick="location.href='/profile'">最初に戻る</button>
       </div>
     </div>

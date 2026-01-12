@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>占い履歴</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: #f0f8ff;
+        text-align: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        display: inline-block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        min-width: 350px;
+        text-align: left;
+      }
+      h1 {
+        color: #007bff;
+        text-align: center;
+      }
+      .history-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+      }
+      .history-item:hover {
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div th:replace="~{common :: navbar}"></div>
+      <h1>Fortune History</h1>
+
+      <ul
+        th:if="${!historyList.isEmpty()}"
+        style="list-style: none; padding: 0"
+      >
+        <li
+          class="history-item"
+          th:each="item : ${historyList}"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+          "
+        >
+          <span
+            th:text="${item.getMessage()}"
+            th:data-item="${item.item}"
+            onclick="alert('この時のラッキーアイテムは：' + this.getAttribute('data-item'))"
+            style="flex-grow: 1; cursor: pointer"
+          >
+          </span>
+
+          <form action="/history/delete" method="post" style="margin: 0">
+            <input type="hidden" name="id" th:value="${item.id}" />
+            <button
+              type="submit"
+              style="
+                background-color: #ff4d4d;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 0.7rem;
+              "
+            >
+              削除
+            </button>
+          </form>
+        </li>
+      </ul>
+      <p
+        th:if="${historyList.isEmpty()}"
+        style="text-align: center; color: #999"
+      >
+        まだ履歴がありません。
+      </p>
+
+      <div style="text-align: center; margin-top: 20px">
+        <button onclick="location.href='/profile'">占いに戻る</button>
+      </div>
+    </div>
+  </body>
+</html>
