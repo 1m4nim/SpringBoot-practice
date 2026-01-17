@@ -1,81 +1,110 @@
 package com.example.demo;
 
-import java.util.UUID;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping; // 追加
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; // 追加
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.*;
 
 @SpringBootApplication
 @Controller
 public class DemoApplication {
 
-	private static final List<FortuneResult> history = new ArrayList<>();
+	// データの保存用リスト
+	private static final List<FortuneResult> fortuneHistory = new ArrayList<>();
+	private static final List<BaggageItem> baggageList = new ArrayList<>();
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	// 表示用のメソッド（リロードしてもここが呼ばれるだけなので安全）
+	// --- 占い機能 (hello.html) ---
 	@GetMapping("/profile")
 	public String profilePage(Model model) {
-		List<FortuneResult> displayHistory = new ArrayList<>(history);
+		List<FortuneResult> displayHistory = new ArrayList<>(fortuneHistory);
 		Collections.reverse(displayHistory);
 		model.addAttribute("history", displayHistory);
 		return "hello";
 	}
 
-	// 占い実行用のメソッド（ボタンを押したときだけ呼ばれる）
 	@PostMapping("/profile")
 	public String doFortune(@RequestParam("name") String name, RedirectAttributes redirectAttributes) {
 		if (name != null && !name.isEmpty()) {
 			String[] results = { "大吉", "中吉", "小吉", "凶" };
-			String luck = results[new java.util.Random().nextInt(results.length)];
+			String luck = results[new Random().nextInt(results.length)];
 			String[] items = { "青いペン", "使い古した辞書", "あたたかいココア", "新しい靴下" };
-			String luckyItem = items[new java.util.Random().nextInt(items.length)];
+			String luckyItem = items[new Random().nextInt(items.length)];
 
-			history.add(new FortuneResult(name, luck, luckyItem));
+			fortuneHistory.add(new FortuneResult(name, luck, luckyItem));
 
-			// リダイレクト先にデータを引き継ぐ設定
 			redirectAttributes.addFlashAttribute("name", name);
 			redirectAttributes.addFlashAttribute("luck", luck);
 			redirectAttributes.addFlashAttribute("item", luckyItem);
 		}
-		// 処理が終わったら GET の /profile へ転送
 		return "redirect:/profile";
 	}
 
+	// --- 持ち物リスト機能 (baggage.html) ---
+	@GetMapping("/baggage")
+	public String baggagePage(Model model) {
+		model.addAttribute("items", baggageList);
+		return "baggage";
+	}
+
+	@PostMapping("/baggage/add")
+	public String addBaggage(@RequestParam String name, @RequestParam String category) {
+		if (!name.isEmpty()) {
+			baggageList.add(new BaggageItem(name, category));
+		}
+		return "redirect:/baggage";
+	}
+
+	@PostMapping("/baggage/check")
+	public String checkBaggage(@RequestParam String id) {
+		for (BaggageItem item : baggageList) {
+			if (item.id.equals(id)) {
+				item.checked = !item.checked;
+				break;
+			}
+		}
+		return "redirect:/baggage";
+	}
+
+	@PostMapping("/baggage/delete")
+	public String deleteBaggage(@RequestParam String id) {
+		baggageList.removeIf(item -> item.id.equals(id));
+		return "redirect:/baggage";
+	}
+
+	// --- 自己紹介ページを表示する命令 ---
 	@GetMapping("/about")
 	public String about() {
-		return "about";
+		return "about"; // about.html を表示
 	}
 
+	// --- 占いの履歴ページを表示する命令 ---
 	@GetMapping("/history")
 	public String history(Model model) {
-		List<FortuneResult> displayHistory = new ArrayList<>(history);
+		// 占い結果のリストを逆順（新しい順）にして渡す
+		List<FortuneResult> displayHistory = new ArrayList<>(fortuneHistory);
 		Collections.reverse(displayHistory);
 		model.addAttribute("historyList", displayHistory);
-		return "history";
+		return "history"; // history.html を表示
 	}
 
+	// --- データ構造クラス ---
 	public static class FortuneResult {
 		public String id = UUID.randomUUID().toString();
 		public String name;
 		public String luck;
 		public String item;
 
-		public FortuneResult(String name, String luck, String item) {
-			this.name = name;
-			this.luck = luck;
-			this.item = item;
+		public FortuneResult(String n, String l, String i) {
+			this.name = n;
+			this.luck = l;
+			this.item = i;
 		}
 
 		public String getMessage() {
@@ -83,11 +112,15 @@ public class DemoApplication {
 		}
 	}
 
-	// 履歴削除用のメソッドを追加
-	@PostMapping("/history/delete")
-	public String deleteHistory(@RequestParam("id") String id) {
-		// idが一致するものをリストから取り除く
-		history.removeIf(result -> result.id.equals(id));
-		return "redirect:/history"; // 削除後は履歴ページを再表示
+	public static class BaggageItem {
+		public String id = UUID.randomUUID().toString();
+		public String name;
+		public String category;
+		public boolean checked = false;
+
+		public BaggageItem(String n, String c) {
+			this.name = n;
+			this.category = c;
+		}
 	}
 }
